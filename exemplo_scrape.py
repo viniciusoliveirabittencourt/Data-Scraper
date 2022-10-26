@@ -26,10 +26,10 @@ while next_button:
             book_name = new_selector.css(".product_main h1::text").get()
             book_price = new_selector.css(
                 ".product_main .price_color::text"
-            ).get()
+            ).re(r"£\d+\.\d{2}")
 
             if book_name not in all_books:
-                all_books[book_name] = book_price
+                all_books[book_name] = book_price[0]
 
         number += 1
     except requests.ConnectionError:
