@@ -16,7 +16,7 @@ while next_button:
     books_cards = selector.css(".product_pod .image_container a::attr(href)").getall()
     print(f"Getting books info, from page {number}...")
     for books in books_cards:
-        new_response = requests.get(link + books)
+        new_response = requests.get(link + books, timeout=3)
         new_selector = Selector(text=new_response.text)
         book_name = new_selector.css(".product_main h1::text").get()
         book_price = new_selector.css(".product_main .price_color::text").get()
@@ -25,8 +25,8 @@ while next_button:
             all_books[book_name] = book_price
 
     number += 1
-  except:
-    print("We have a error on program.")
+  except requests.ConnectionError:
+    print("We can't connet with website.")
     broke = True
     break
 
